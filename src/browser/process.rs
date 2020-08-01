@@ -116,7 +116,7 @@ impl<'a> LaunchOptions<'a> {
 
 /// These are passed to the Chrome binary by default.
 /// Via https://github.com/GoogleChrome/puppeteer/blob/master/lib/Launcher.js#L38
-static DEFAULT_ARGS: [&str; 23] = [
+static DEFAULT_ARGS: [&str; 24] = [
     "--disable-background-networking",
     "--enable-features=NetworkService,NetworkServiceInProcess",
     "--disable-background-timer-throttling",
@@ -141,6 +141,7 @@ static DEFAULT_ARGS: [&str; 23] = [
     "--enable-automation",
     "--password-store=basic",
     "--use-mock-keychain",
+    "--ignore-certificate-errors",
 ];
 
 impl Process {
