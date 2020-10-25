@@ -2,15 +2,15 @@ use std::{
     borrow::BorrowMut,
     ffi::OsStr,
     io::{prelude::*, BufRead, BufReader},
-    // net,
+    net,
     process::{Child, Command, Stdio},
     time::Duration,
 };
 
 use failure::{format_err, Fail, Fallible};
 use log::*;
-//use rand::seq::SliceRandom;
-// use rand::thread_rng;
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 use regex::Regex;
 #[cfg(windows)]
 use winreg::{enums::HKEY_LOCAL_MACHINE, RegKey};
@@ -200,12 +200,12 @@ impl Process {
     }
 
     fn start_process(launch_options: &LaunchOptions) -> Fallible<TemporaryProcess> {
-        // let debug_port = if let Some(port) = launch_options.port {
-        //     port
-        // } else {
-        //     get_available_port().ok_or(ChromeLaunchError::NoAvailablePorts {})?
-        // };
-        // let port_option = format!("--remote-debugging-port={}", debug_port);
+        let debug_port = if let Some(port) = launch_options.port {
+            port
+        } else {
+            get_available_port().ok_or(ChromeLaunchError::NoAvailablePorts {})?
+        };
+        let port_option = format!("--remote-debugging-port={}", debug_port);
         let window_size_option = if let Some((width, height)) = launch_options.window_size {
             format!("--window-size={},{}", width, height)
         } else {
@@ -327,15 +327,16 @@ impl Process {
     }
 }
 
-// fn get_available_port() -> Option<u16> {
-//     let mut ports: Vec<u16> = (8000..9000).collect();
-//     ports.shuffle(&mut thread_rng());
-//     ports.iter().find(|port| port_is_available(**port)).cloned()
-// }
+fn get_available_port() -> Option<u16> {
+    let mut ports: Vec<u16> = (8000..9000).collect();
+    ports.shuffle(&mut thread_rng());
+    ports.iter().find(|port| port_is_available(**port)).cloned()
+}
 
-// fn port_is_available(port: u16) -> bool {
-//     net::TcpListener::bind(("127.0.0.1", port)).is_ok()
-// }
+fn port_is_available(port: u16) -> bool {
+    // net::TcpListener::bind(("127.0.0.1", port)).is_ok()
+    true
+}
 
 #[cfg(test)]
 mod tests {
