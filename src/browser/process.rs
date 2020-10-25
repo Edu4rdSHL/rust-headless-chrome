@@ -222,7 +222,7 @@ impl Process {
         trace!("Chrome will have profile: {}", data_dir_option);
 
         let mut args = vec![
-            // port_option.as_str(),
+            port_option.as_str(),
             "--disable-gpu",
             "--enable-logging",
             "--verbose",
@@ -328,14 +328,13 @@ impl Process {
 }
 
 fn get_available_port() -> Option<u16> {
-    let mut ports: Vec<u16> = (8000..9000).collect();
+    let mut ports: Vec<u16> = (50000..51000).collect();
     ports.shuffle(&mut thread_rng());
     ports.iter().find(|port| port_is_available(**port)).cloned()
 }
 
 fn port_is_available(port: u16) -> bool {
-    // net::TcpListener::bind(("127.0.0.1", port)).is_ok()
-    true
+    net::TcpListener::bind(("127.0.0.1", port)).is_ok()
 }
 
 #[cfg(test)]
