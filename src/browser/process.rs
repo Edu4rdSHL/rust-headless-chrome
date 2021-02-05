@@ -32,7 +32,7 @@ pub struct Process {
 enum ChromeLaunchError {
     #[fail(display = "Chrome launched, but didn't give us a WebSocket URL before we timed out")]
     PortOpenTimeout,
-    #[fail(display = "There are no available ports between 8000 and 9000 for debugging")]
+    #[fail(display = "There are no available ports between 8000 and 20000 for debugging")]
     NoAvailablePorts,
     #[fail(display = "The chosen debugging port is already in use")]
     DebugPortInUse,
@@ -328,7 +328,7 @@ impl Process {
 }
 
 fn get_available_port() -> Option<u16> {
-    let mut ports: Vec<u16> = (8000..9000).collect();
+    let mut ports: Vec<u16> = (8000..20000).collect();
     ports.shuffle(&mut thread_rng());
     ports.iter().find(|port| port_is_available(**port)).cloned()
 }
