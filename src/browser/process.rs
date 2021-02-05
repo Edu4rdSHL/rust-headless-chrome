@@ -205,7 +205,7 @@ impl Process {
         } else {
             get_available_port().ok_or(ChromeLaunchError::NoAvailablePorts {})?
         };
-        // let port_option = format!("--remote-debugging-port={}", debug_port);
+        let port_option = format!("--remote-debugging-port={}", debug_port);
         let window_size_option = if let Some((width, height)) = launch_options.window_size {
             format!("--window-size={},{}", width, height)
         } else {
@@ -222,7 +222,7 @@ impl Process {
         trace!("Chrome will have profile: {}", data_dir_option);
 
         let mut args = vec![
-            //         port_option.as_str(),
+            port_option.as_str(),
             "--disable-gpu",
             "--enable-logging",
             "--verbose",
@@ -334,8 +334,7 @@ fn get_available_port() -> Option<u16> {
 }
 
 fn port_is_available(port: u16) -> bool {
-    let binder = net::TcpListener::bind(("127.0.0.1", port)).is_ok();
-    true
+    net::TcpListener::bind(("127.0.0.1", port)).is_ok()
 }
 
 #[cfg(test)]
