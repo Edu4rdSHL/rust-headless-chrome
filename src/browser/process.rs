@@ -200,11 +200,11 @@ impl Process {
     }
 
     fn start_process(launch_options: &LaunchOptions) -> Fallible<TemporaryProcess> {
-        // let debug_port = if let Some(port) = launch_options.port {
-        //     port
-        // } else {
-        //     get_available_port().ok_or(ChromeLaunchError::NoAvailablePorts {})?
-        // };
+        let debug_port = if let Some(port) = launch_options.port {
+            port
+        } else {
+            get_available_port().ok_or(ChromeLaunchError::NoAvailablePorts {})?
+        };
         // let port_option = format!("--remote-debugging-port={}", debug_port);
         let window_size_option = if let Some((width, height)) = launch_options.window_size {
             format!("--window-size={},{}", width, height)
